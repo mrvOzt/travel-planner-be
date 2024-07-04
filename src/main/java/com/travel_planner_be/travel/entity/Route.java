@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -13,8 +14,8 @@ public class Route {
 
     private String userId;
     private double price;
-    private DateFormat startDate;
-    private DateFormat endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<Place> places;
 
 }
