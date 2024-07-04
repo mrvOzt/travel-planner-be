@@ -9,9 +9,10 @@ spring:
     active: dev
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: travel_planner
+      uri: mongodb+srv://TravelPlanner:ExvHrJA9MAnf55Ik@travelplanner.8vys92s.mongodb.net/
+      database: TravelPlanner
 logging:
   level:
     org.springframework.security: DEBUG
+server:
+  port: 8081
