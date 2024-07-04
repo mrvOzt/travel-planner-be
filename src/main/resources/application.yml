@@ -1,0 +1,12 @@
+spring:
+    application:
+        name=travel-planner-be
+    data:
+        mongodb:
+            host;localhost
+            port:27017
+            database:travel-planner
+
+server:
+    servlet:
+        context-path: /travel-planner/v1
