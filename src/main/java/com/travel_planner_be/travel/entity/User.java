@@ -20,10 +20,20 @@ public class User implements UserDetails {
     private String id;
 
     @NonNull
+    private String name;
+
+    @NonNull
+    private String surname;
+
+    @NonNull
     private String username;
 
     @NonNull
     private String password;
+
+    @NonNull
+    private String phone_number;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

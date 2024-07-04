@@ -12,7 +12,10 @@ public class Place {
     private String place_name;
     private double latitude;
     private double longtitude;
+    private String country;
     private String city;
     private String district;
+    private String duration;
+    private String type;
     private List<PlaceTag> tag;
 }

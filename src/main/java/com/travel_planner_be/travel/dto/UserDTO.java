@@ -13,7 +13,8 @@ public class UserDTO {
     public static UserDTO from(User user) {
         return builder()
                 .id(user.getId())
-                .username(user.getUsername())
+                .username(user.getUsername()
+                )
                 .build();
     }
 }

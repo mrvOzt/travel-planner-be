@@ -40,14 +40,17 @@ public class AuthController {
     @PostConstruct
     public void init(){
         SignupDTO user = new SignupDTO();
-        user.setUsername("Merve");
+        user.setName("Merve");
+        user.setSurname("Öztürk");
+        user.setUsername("mervemr2601@gmail.com");
         user.setPassword("123");
+        user.setPhone_number("02324444444");
         register(user);
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody SignupDTO signupDTO) {
-        User user = new User(signupDTO.getUsername(), signupDTO.getPassword());
+        User user = new User(signupDTO.getName(),signupDTO.getSurname(),signupDTO.getUsername(), signupDTO.getPassword(),signupDTO.getPhone_number());
         userDetailsManager.createUser(user);
 
         Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(user, signupDTO.getPassword(), Collections.EMPTY_LIST);
