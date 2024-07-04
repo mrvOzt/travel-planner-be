@@ -19,6 +19,7 @@ public class User implements UserDetails {
     @Id
     private String id;
 
+
     @NonNull
     private String name;
 
