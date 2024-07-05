@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.entity;
 
+import com.mongodb.lang.Nullable;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +22,7 @@ public class Route {
     private double price;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<Place> places;
+    private List<String> places;
     private int statusFlag;
 
 }

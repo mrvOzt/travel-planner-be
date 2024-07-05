@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.entity;
 
+import com.mongodb.lang.Nullable;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,5 +21,5 @@ public class Place {
     private String district;
     private String duration;
     private String type;
-    private List<PlaceTag> tag;
+    private List<String> tag;
 }
