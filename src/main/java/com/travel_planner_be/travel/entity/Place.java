@@ -1,6 +1,7 @@
 package com.travel_planner_be.travel.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 @Document
 public class Place {
 
+    @Id
+    private String id;
     private String place_name;
     private double latitude;
     private double longtitude;

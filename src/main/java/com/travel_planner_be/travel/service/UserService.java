@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 
 @Service
-public class UserManager implements UserDetailsManager {
+public class UserService implements UserDetailsManager {
     @Autowired
     UserRepository userRepository;
 
