@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.service;
 
+import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.repository.RouteRepository;
 import com.travel_planner_be.travel.repository.UserRepository;
@@ -22,4 +23,13 @@ public class RouteService {
     public List<Route> getRouteByUserId(String userId) {
         return routeRepository.findByUserId(userId).orElse(null);
     }
+    public List<String> getRoutePlaces(String id) {
+        return routeRepository.findById(id)
+                .map(Route::getPlaces)
+                .orElse(null);
+    }
+
+
+
+
 }

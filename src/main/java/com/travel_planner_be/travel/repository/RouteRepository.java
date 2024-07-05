@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.repository;
 
+import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.entity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
