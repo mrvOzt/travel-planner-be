@@ -12,8 +12,10 @@ import java.util.List;
 @Document
 public class Route {
 
+    private String userLocation;
+    private String routeLocation;
     private String userId;
-    private double price;
+    private double price=0;
     private LocalDate startDate;
     private LocalDate endDate;
     private List<Place> places;
