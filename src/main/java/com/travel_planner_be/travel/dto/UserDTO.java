@@ -8,13 +8,19 @@ import lombok.Data;
 @Data
 public class UserDTO {
     private String id;
+    private String name;
+    private String surname;
     private String username;
+    private String phone_number;
+
 
     public static UserDTO from(User user) {
         return builder()
                 .id(user.getId())
-                .username(user.getUsername()
-                )
+                .name(user.getName())
+                .surname(user.getSurname())
+                .username(user.getUsername())
+                .phone_number(user.getPhone_number())
                 .build();
     }
 }
