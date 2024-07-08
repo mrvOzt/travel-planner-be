@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 public class RoutePlanningService {
 
-
     private final RoutePlanningRepository routePlanningRepository;
 
 
@@ -22,10 +21,12 @@ public class RoutePlanningService {
 
         return routePlanningRepository.findByTagIn(types);
     }
+
     public List<Place> getPlaceByCity(String city) {
 
         return routePlanningRepository.findAllByCity(city);
     }
+
     public Optional<Place> getPlaceById(String id) {
 
         return routePlanningRepository.findById(id);

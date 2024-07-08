@@ -23,6 +23,7 @@ public class PlaceService {
         place.setId(UUID.randomUUID().toString());
         return placeRepository.save(place);
     }
+
     public Place getPlace(String id) {
         return placeRepository.findById(id).orElse(null);
     }

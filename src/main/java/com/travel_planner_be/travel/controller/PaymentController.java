@@ -5,6 +5,7 @@ import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.entity.User;
 import com.travel_planner_be.travel.service.PaymentService;
 import com.travel_planner_be.travel.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +19,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/payment")
+@RequiredArgsConstructor
 public class PaymentController {
 
-    @Autowired
     private PaymentService paymentService;
-    @Autowired
     private UserService userService;
 
     @PostMapping(value ="/approvePayment")
     public ResponseEntity<String> approvePayment(@RequestBody CreditCard creditCard) {
 
-
-        return new ResponseEntity<>("Ödeme başarılı", HttpStatus.OK);
+        return paymentService.approvePayment(creditCard);
     }
 
     @PostMapping(value = "/savePaymentMethod")
@@ -39,16 +38,10 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Bu kredi kartı numarası zaten kayıtlıdır.");
         }
-        System.out.println(creditCard.getUserId());
 
         Optional<User> optionalUser = userService.getUserById(creditCard.getUserId());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-
-            if (!user.getName().equals(creditCard.getHolderName()) || !user.getSurname().equals(creditCard.getHolderSurname())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Kredi kartı bilgileri kullanıcı adı ve soyadı ile eşleşmiyor.");
-            }
 
             if (user.getPaymentMethods() == null) {
                 user.setPaymentMethods(new ArrayList<>());

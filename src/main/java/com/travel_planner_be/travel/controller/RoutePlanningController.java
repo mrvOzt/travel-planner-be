@@ -22,7 +22,6 @@ public class RoutePlanningController {
     private RoutePlanningService routePlanningService;
 
 
-
     @PostMapping(value = "/getPlacesByCityAndTags")
     public ResponseEntity<Map<String, List<Place>>> getPlacesByCityAndTags(@RequestBody FilterDTO filterDTO) {
 
@@ -46,7 +45,6 @@ public class RoutePlanningController {
     }
 
 
-
     @GetMapping("/totalPrice")
     public ResponseEntity<Double> getTotalPriceByPlaceIds(@RequestBody List<String> placeIds) {
         double totalPrice = 0.0;
@@ -60,7 +58,4 @@ public class RoutePlanningController {
         }
         return new ResponseEntity<>(totalPrice, HttpStatus.OK);
     }
-
-
-
 }
