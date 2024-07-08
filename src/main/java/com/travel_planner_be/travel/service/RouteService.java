@@ -1,9 +1,7 @@
 package com.travel_planner_be.travel.service;
 
-import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.repository.RouteRepository;
-import com.travel_planner_be.travel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,7 @@ public class RouteService {
         return routeRepository.save(route);
     }
     public List<Route> getRouteByUserId(String userId) {
-        return routeRepository.findByUserId(userId).orElse(null);
+        return routeRepository.findAllByUserId(userId);
     }
     public List<String> getRoutePlaces(String id) {
         return routeRepository.findById(id)
@@ -29,6 +27,14 @@ public class RouteService {
                 .orElse(null);
     }
 
+    public boolean cancelRoute(String routeId) {
+        if (routeRepository.existsById(routeId)) {
+            routeRepository.deleteById(routeId);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 

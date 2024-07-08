@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface RoutePlanningRepository extends MongoRepository <Place,String>{
 
-    List<Place> findByTypeIn(List<String> type);
+    List<Place> findByTagIn(List<String> type);
+    List<Place> findAllByCity(String city);
 
 }
