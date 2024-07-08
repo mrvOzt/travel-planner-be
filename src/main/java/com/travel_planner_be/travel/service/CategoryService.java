@@ -18,7 +18,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CategoryService {
 
-    @Autowired
     private CategoryRepository categoryRepository;
 
     public ResponseEntity<Category> addCategory(String categoryName) {

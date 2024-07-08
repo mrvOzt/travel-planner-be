@@ -7,6 +7,8 @@ import com.travel_planner_be.travel.repository.PlaceRepository;
 import com.travel_planner_be.travel.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,4 +29,16 @@ public class PlaceService {
         return placeRepository.findById(id).orElse(null);
     }
 
+    public List<Place> getAllPlaces() {
+        return placeRepository.findAll();
+    }
+
+    public ResponseEntity<?> deletePlace(String id) {
+        if (placeRepository.existsById(id)) {
+            placeRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
