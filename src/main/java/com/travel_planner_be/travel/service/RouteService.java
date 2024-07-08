@@ -19,7 +19,7 @@ public class RouteService {
         return routeRepository.save(route);
     }
     public List<Route> getRouteByUserId(String userId) {
-        return routeRepository.findByUserId(userId).orElse(null);
+        return routeRepository.findAllByUserId(userId);
     }
     public List<String> getRoutePlaces(String id) {
         return routeRepository.findById(id)
@@ -27,6 +27,14 @@ public class RouteService {
                 .orElse(null);
     }
 
+    public boolean cancelRoute(String routeId) {
+        if (routeRepository.existsById(routeId)) {
+            routeRepository.deleteById(routeId);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 
