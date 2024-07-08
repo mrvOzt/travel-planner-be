@@ -17,7 +17,9 @@ public class User {
     private String surname;
     private String email;
     private String password;
-    private String phone_number;
-    private List<Route> routes;
+    private String phoneNumber;
+    private List<String> routes;
+    private List<String> paymentMethods;
+    private String role;
 
 }

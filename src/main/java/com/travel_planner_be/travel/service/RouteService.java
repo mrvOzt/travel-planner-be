@@ -16,6 +16,7 @@ public class RouteService {
 
     public Route saveRoute(Route route) {
         route.setId(UUID.randomUUID().toString());
+
         return routeRepository.save(route);
     }
     public List<Route> getRouteByUserId(String userId) {

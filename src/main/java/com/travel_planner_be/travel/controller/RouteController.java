@@ -1,17 +1,20 @@
 package com.travel_planner_be.travel.controller;
 
 
-import com.travel_planner_be.travel.dto.RouteDTO;
 import com.travel_planner_be.travel.entity.Route;
+import com.travel_planner_be.travel.entity.User;
 import com.travel_planner_be.travel.service.RouteService;
 
+import com.travel_planner_be.travel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -20,27 +23,33 @@ public class RouteController {
 
     @Autowired
     private RouteService routeService;
+    @Autowired
+    private UserService userService;
 
 
 
-//    @PostMapping(value = "/saveRoute")
-//    public ResponseEntity<Route> saveRoute(@RequestBody RouteDTO routeDTO) {
-//        Route savedRoute = routeService.saveRoute(routeDTO.getRoute());
-//
-//
-//        User user = userService.findUserById(routeDTO.getUserId());
-//
-//        // Kaydedilen route'un id'sini user's routes listesine ekle
-//        if (user.getRoutes() == null) {
-//            user.setRoutes(new ArrayList<>());
-//        }
-//        user.getRoutes().add(savedRoute.getId());
-//
-//        // User'ı güncelle
-//        userService.updateUser(user);
-//
-//        return new ResponseEntity<>(savedRoute, HttpStatus.OK);
-//    }
+    @PostMapping(value = "/saveRoute")
+    public ResponseEntity<Route> saveRoute(@RequestBody Route route) {
+
+        Route savedRoute = routeService.saveRoute(route);
+
+        Optional<User> optionalUser = userService.getUserById(route.getUserId());
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getRoutes() == null) {
+                user.setRoutes(new ArrayList<>());
+            }
+            user.getRoutes().add(savedRoute.getId());
+
+            userService.saveUser(user);
+
+            return new ResponseEntity<>(savedRoute, HttpStatus.OK);
+        } else {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     @GetMapping(value = "/getRoutes/{userId}")
