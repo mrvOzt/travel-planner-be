@@ -4,6 +4,7 @@ import com.travel_planner_be.travel.entity.Category;
 import com.travel_planner_be.travel.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,16 +31,8 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteCategory(@RequestParam String name) {
-        categoryService.deleteCategory(name);
-        return ResponseEntity.ok("Category deleted successfully");
+    public ResponseEntity<?> deleteCategory(@RequestParam String name) {
+        return categoryService.deleteCategory(name);
     }
-
-    @GetMapping("/findById/{id}")
-    public ResponseEntity<String> findIdByName(@PathVariable String id) {
-        Optional<String> categoryId = categoryService.findNameById(id);
-        return categoryId.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(404).body("Category not found"));
-    }
-
 
 }

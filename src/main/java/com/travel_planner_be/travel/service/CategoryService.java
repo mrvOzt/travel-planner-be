@@ -35,10 +35,10 @@ public class CategoryService {
         return category.map(Category::getName);
     }
 
-    public ResponseEntity<Category> deleteCategory(String name) {
-        Optional<Category> category = categoryRepository.findByName(name);
-        if(category.isPresent()) {
-            categoryRepository.deleteById(category.get().getId());
+    public ResponseEntity<?> deleteCategory(String name) {
+        Optional<Category> tempCategory = categoryRepository.findByName(name);
+        if(tempCategory.isPresent()) {
+            categoryRepository.deleteById(tempCategory.get().getId());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
