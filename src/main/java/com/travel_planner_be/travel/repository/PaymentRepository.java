@@ -5,8 +5,6 @@ import com.travel_planner_be.travel.entity.CreditCard;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface PaymentRepository extends MongoRepository<CreditCard, String> {
 

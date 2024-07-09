@@ -1,11 +1,11 @@
 package com.travel_planner_be.travel.service;
 
+import com.travel_planner_be.travel.entity.Participant;
 import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.entity.User;
 import com.travel_planner_be.travel.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,6 @@ public class RouteService {
     private final RouteRepository routeRepository;
     private final UserService userService;
     private final PlaceService placeService;
-
 
     public List<Route> getRouteByUserId(String userId) {
         return routeRepository.findAllByUserId(userId);
@@ -58,9 +57,16 @@ public class RouteService {
          Optional<User> optionalUser = userService.getUserById(route.getUserId());
 
          for (String placeId : savedRoute.getPlaces()) {
-             Place selectedPlace = placeService.getPlace(placeId);
-             selectedPlace.setPopularityRate(selectedPlace.getPopularityRate() + 1);
-             placeService.updatePlace(selectedPlace);
+             Optional<Place> selectedPlace = placeService.getPlace(placeId);
+             if(selectedPlace.isPresent()){
+                 Place place = selectedPlace.get();
+                 place.setPopularityRate(place.getPopularityRate() + 1);
+                 placeService.updatePlace(place);
+             }
+             else{
+                 return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+             }
+
          }
 
          if (optionalUser.isPresent()) {
@@ -77,6 +83,15 @@ public class RouteService {
 
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
          }
+     }
+
+     public List<Participant> getRouteParticipants(String routeId){
+        Optional<Route> route = routeRepository.findById(routeId);
+        if(route.isPresent()){
+            Route selectedRoute = route.get();
+            return selectedRoute.getParticipants();
+        }
+        return new ArrayList<>();
      }
 
 

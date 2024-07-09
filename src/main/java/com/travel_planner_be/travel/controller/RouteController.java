@@ -1,25 +1,19 @@
 package com.travel_planner_be.travel.controller;
 
 
-import com.travel_planner_be.travel.entity.Place;
+import com.travel_planner_be.travel.entity.Participant;
 import com.travel_planner_be.travel.entity.Route;
-import com.travel_planner_be.travel.entity.User;
-import com.travel_planner_be.travel.service.PlaceService;
 import com.travel_planner_be.travel.service.RouteService;
-import com.travel_planner_be.travel.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import java.util.*;
+
+import java.util.List;
 
 
 @RestController
-@RequestMapping("api/route")
 @RequiredArgsConstructor
+@RequestMapping("api/route")
 public class RouteController {
 
 
@@ -45,7 +39,8 @@ public class RouteController {
         return routeService.cancelRoute(routeId);
     }
 
-
-
-
+    @GetMapping(value = "/getParticipants")
+    public List<Participant> getParticipants(@RequestParam String routeId){
+        return routeService.getRouteParticipants(routeId);
+    }
 }

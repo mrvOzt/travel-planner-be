@@ -5,12 +5,12 @@ import com.travel_planner_be.travel.dto.FilterDTO;
 import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/place")
@@ -25,7 +25,7 @@ public class PlaceController {
     }
 
     @GetMapping(value = "/getPlace/{id}")
-    public Place getPlace(@PathVariable String id) {
+    public Optional<Place> getPlace(@PathVariable String id) {
         return placeService.getPlace(id);
     }
 

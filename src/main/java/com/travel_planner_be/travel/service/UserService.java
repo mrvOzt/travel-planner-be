@@ -4,7 +4,6 @@ import com.travel_planner_be.travel.dto.LoginDTO;
 import com.travel_planner_be.travel.entity.User;
 import com.travel_planner_be.travel.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.service;
 
+import com.travel_planner_be.travel.dto.PaymentDTO;
 import com.travel_planner_be.travel.entity.CreditCard;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.entity.User;
@@ -24,45 +25,26 @@ public class PaymentService {
     private final UserService userService;
 
 
-    public ResponseEntity<String> approvePayment(CreditCard creditCard){
-        CreditCard existingCard = paymentRepository.findByCardNumber(creditCard.getCardNumber());
+//    public ResponseEntity<String> approvePayment(PaymentDTO paymentDTO){
+//        CreditCard requestCardInfo = paymentDTO.getCreditCard();
+//        CreditCard existingCard = paymentRepository.findByCardNumber(requestCardInfo.getCardNumber());
+//
+//        if (existingCard != null) {
+//            Optional<User> optionalUser = userService.getUserById(requestCardInfo.getUserId());
+//            if (optionalUser.isPresent()) {
+//                User user = optionalUser.get();
+//
+//
+//                if(existingCard.getLimit() >= paymentDTO.getTourPrice()){
+//                    return new ResponseEntity<>("Payment successful", HttpStatus.OK);
+//                }
+//                else{
+//                    return new ResponseEntity<>("Card limit is insufficient for transaction",HttpStatus.BAD_REQUEST);
+//                }
+//            }
+//        }
+//        return new ResponseEntity<>("Payment failed" , HttpStatus.BAD_REQUEST);
+//    }
 
-        if (existingCard != null) {
-            Optional<User> optionalUser = userService.getUserById(creditCard.getUserId());
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
 
-                if (!user.getName().equals(creditCard.getHolderName()) || !user.getSurname().equals(creditCard.getHolderSurname())) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body("Kredi kartı bilgileri eşleşmiyor.");
-                }
-            }
-        }
-
-        return new ResponseEntity<>("Ödeme başarılı", HttpStatus.OK);
-    }
-
-    public ResponseEntity<?> savePaymentMethod(CreditCard creditCard){
-        CreditCard existingCard = paymentRepository.findByCardNumber(creditCard.getCardNumber());
-        if (existingCard != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("This credit card number is already registered.");
-        }
-
-        Optional<User> optionalUser = userService.getUserById(creditCard.getUserId());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            if (user.getPaymentMethods() == null) {
-                user.setPaymentMethods(new ArrayList<>());
-            }
-            CreditCard savedCard = paymentRepository.save(creditCard);
-            user.getPaymentMethods().add(savedCard.getCardNumber());
-            userService.saveUser(user);
-
-            return ResponseEntity.ok(savedCard);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }
