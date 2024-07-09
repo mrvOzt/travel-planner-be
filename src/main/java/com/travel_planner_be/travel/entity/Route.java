@@ -31,6 +31,8 @@ public class Route {
 
     private List<String> places;
 
+    private List<Participant> participants;
+
     private int statusFlag;
 
 }

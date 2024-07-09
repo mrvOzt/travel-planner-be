@@ -15,4 +15,8 @@ public interface PlaceRepository extends MongoRepository<Place, String> {
     List<Place> findByCityAndTypeOrderByPopularityRateDesc(String city, String type, Pageable pageable);
 
     List<Place> findByCityOrderByPopularityRateDesc(String city, Pageable pageable);
+
+    List<Place> findByTagIn(List<String> type);
+
+    List<Place> findAllByCity(String city);
 }

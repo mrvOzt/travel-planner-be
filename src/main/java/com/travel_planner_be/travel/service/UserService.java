@@ -26,7 +26,7 @@ public class UserService {
             user.setId(UUID.randomUUID().toString());
             Optional<User> savedUser = userRepository.findByEmail(user.getEmail());
             if(savedUser.isPresent()){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Aldready registered");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Already registered");
             }
         } else {
             Optional<User> existingUser = userRepository.findById(user.getId());

@@ -24,54 +24,10 @@ public class RouteController {
 
 
     private final RouteService routeService;
-    private final UserService userService;
-    private final PlaceService placeService;
-
 
     @PostMapping(value = "/saveRoute")
     public ResponseEntity<Route> saveRoute(@RequestBody Route route) {
-
-        Route savedRoute = routeService.saveRoute(route);
-
-        Optional<User> optionalUser = userService.getUserById(route.getUserId());
-
-        for (String placeId : savedRoute.getPlaces()) {
-            Place selectedPlace = placeService.getPlace(placeId);
-            selectedPlace.setPopularityRate(selectedPlace.getPopularityRate() + 1);
-            placeService.updatePlace(selectedPlace);
-        }
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (user.getRoutes() == null) {
-                user.setRoutes(new ArrayList<>());
-            }
-            user.getRoutes().add(savedRoute.getId());
-
-            userService.saveUser(user);
-
-            return new ResponseEntity<>(savedRoute, HttpStatus.OK);
-        } else {
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping(value = "/getPopularPlaces")
-    public List<Place> getPopularPlaces(@RequestParam(defaultValue = "4", required = false) int top,
-                                        @RequestParam(required = false) String type,
-                                        @RequestParam String city) {
-
-        Pageable pageable = PageRequest.of(0, top, Sort.by(Sort.Direction.DESC, "popularityRate"));
-        List<Place> popularPlaces;
-
-
-        if (type != null && !type.isEmpty()) {
-            popularPlaces = placeService.findByCityAndTypeOrderByPopularityRateDesc(city, type, pageable);
-        } else {
-            popularPlaces = placeService.findByCityOrderByPopularityRateDesc(city, pageable);
-        }
-        return popularPlaces;
+        return routeService.saveRoute(route);
     }
 
     @GetMapping(value = "/getRoutes/{userId}")
@@ -86,16 +42,7 @@ public class RouteController {
 
     @PostMapping(value = "/cancelRoute")
     public ResponseEntity<String> cancelRoute(@RequestParam String routeId) {
-        if (routeId == null || routeId.isEmpty()) {
-            return new ResponseEntity<>("Invalid routeId", HttpStatus.BAD_REQUEST);
-        }
-
-        boolean isDeleted = routeService.cancelRoute(routeId);
-        if (isDeleted) {
-            return new ResponseEntity<>("Tour successfully canceled", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Tour cancellation failed", HttpStatus.NOT_FOUND);
-        }
+        return routeService.cancelRoute(routeId);
     }
 
 

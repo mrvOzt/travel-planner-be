@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,17 +23,9 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final UserService userService;
 
-    public CreditCard getByCardNumber(String cardNumber) {
-        return paymentRepository.findByCardNumber(cardNumber);
-    }
-
-    public CreditCard savePaymentMethod(CreditCard creditCard) {
-
-        return paymentRepository.save(creditCard);
-    }
 
     public ResponseEntity<String> approvePayment(CreditCard creditCard){
-        CreditCard existingCard = getByCardNumber(creditCard.getCardNumber());
+        CreditCard existingCard = paymentRepository.findByCardNumber(creditCard.getCardNumber());
 
         if (existingCard != null) {
             Optional<User> optionalUser = userService.getUserById(creditCard.getUserId());
@@ -49,4 +42,27 @@ public class PaymentService {
         return new ResponseEntity<>("Ödeme başarılı", HttpStatus.OK);
     }
 
+    public ResponseEntity<?> savePaymentMethod(CreditCard creditCard){
+        CreditCard existingCard = paymentRepository.findByCardNumber(creditCard.getCardNumber());
+        if (existingCard != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("This credit card number is already registered.");
+        }
+
+        Optional<User> optionalUser = userService.getUserById(creditCard.getUserId());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            if (user.getPaymentMethods() == null) {
+                user.setPaymentMethods(new ArrayList<>());
+            }
+            CreditCard savedCard = paymentRepository.save(creditCard);
+            user.getPaymentMethods().add(savedCard.getCardNumber());
+            userService.saveUser(user);
+
+            return ResponseEntity.ok(savedCard);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

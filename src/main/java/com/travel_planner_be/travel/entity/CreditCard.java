@@ -15,5 +15,6 @@ public class CreditCard {
     private String holderSurname;
     private String cvv;
     private String expirationDate;
+    private double limit;
 
 }

@@ -27,33 +27,12 @@ public class PaymentController {
 
     @PostMapping(value ="/approvePayment")
     public ResponseEntity<String> approvePayment(@RequestBody CreditCard creditCard) {
-
         return paymentService.approvePayment(creditCard);
     }
 
     @PostMapping(value = "/savePaymentMethod")
     public ResponseEntity<?> savePaymentMethod(@RequestBody CreditCard creditCard) {
-        CreditCard existingCard = paymentService.getByCardNumber(creditCard.getCardNumber());
-        if (existingCard != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("This credit card number is already registered.");
-        }
-
-        Optional<User> optionalUser = userService.getUserById(creditCard.getUserId());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            if (user.getPaymentMethods() == null) {
-                user.setPaymentMethods(new ArrayList<>());
-            }
-            CreditCard savedCard = paymentService.savePaymentMethod(creditCard);
-            user.getPaymentMethods().add(savedCard.getCardNumber());
-            userService.saveUser(user);
-
-            return ResponseEntity.ok(savedCard);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return paymentService.savePaymentMethod(creditCard);
     }
 
 }

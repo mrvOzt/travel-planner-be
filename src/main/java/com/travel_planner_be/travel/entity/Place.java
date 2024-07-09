@@ -43,4 +43,5 @@ public class Place {
     private boolean IsVegan;
 
 
+
 }
