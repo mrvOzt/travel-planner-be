@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,5 +41,18 @@ public class PlaceService {
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    public List<Place> getAllPlacesByPref(String pref) {
+        switch (pref) {
+            case "m", "w":{
+                return placeRepository.findAllByGenderPreference(pref);
+            }
+            case "h":{
+                return placeRepository.findAllByType("Hotel");
+            }
+        }
+
+        return Collections.emptyList();
     }
 }

@@ -23,4 +23,5 @@ public class Place {
     private double price;
     private String type;
     private List<String> tag;
+    public String genderPreference;
 }

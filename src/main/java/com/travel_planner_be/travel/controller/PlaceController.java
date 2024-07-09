@@ -39,5 +39,10 @@ public class PlaceController {
         return placeService.getAllPlaces();
     }
 
+    @GetMapping("/getAllPlacesByPref")
+    public List<Place> getAllPlacesByPref(@RequestParam String pref) {
+        return placeService.getAllPlacesByPref(pref);
+    }
+
 
 }
