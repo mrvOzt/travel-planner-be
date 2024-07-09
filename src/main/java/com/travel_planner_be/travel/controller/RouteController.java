@@ -1,30 +1,31 @@
 package com.travel_planner_be.travel.controller;
 
 
+import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.entity.User;
+import com.travel_planner_be.travel.service.PlaceService;
 import com.travel_planner_be.travel.service.RouteService;
-
 import com.travel_planner_be.travel.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import java.util.*;
 
 
 @RestController
-@RequestMapping("api/route/")
+@RequestMapping("api/route")
+@RequiredArgsConstructor
 public class RouteController {
 
-    @Autowired
-    private RouteService routeService;
-    @Autowired
-    private UserService userService;
+
+    private final RouteService routeService;
+    private final UserService userService;
+    private final PlaceService placeService;
 
 
     @PostMapping(value = "/saveRoute")
@@ -33,6 +34,12 @@ public class RouteController {
         Route savedRoute = routeService.saveRoute(route);
 
         Optional<User> optionalUser = userService.getUserById(route.getUserId());
+
+        for (String placeId : savedRoute.getPlaces()) {
+            Place selectedPlace = placeService.getPlace(placeId);
+            selectedPlace.setPopularityRate(selectedPlace.getPopularityRate() + 1);
+            placeService.updatePlace(selectedPlace);
+        }
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -50,6 +57,22 @@ public class RouteController {
         }
     }
 
+    @PostMapping(value = "/getPopularPlaces")
+    public List<Place> getPopularPlaces(@RequestParam(defaultValue = "4", required = false) int top,
+                                        @RequestParam(required = false) String type,
+                                        @RequestParam String city) {
+
+        Pageable pageable = PageRequest.of(0, top, Sort.by(Sort.Direction.DESC, "popularityRate"));
+        List<Place> popularPlaces;
+
+
+        if (type != null && !type.isEmpty()) {
+            popularPlaces = placeService.findByCityAndTypeOrderByPopularityRateDesc(city, type, pageable);
+        } else {
+            popularPlaces = placeService.findByCityOrderByPopularityRateDesc(city, pageable);
+        }
+        return popularPlaces;
+    }
 
     @GetMapping(value = "/getRoutes/{userId}")
     public List<Route> getUserRoutes(@PathVariable String userId) {
@@ -64,14 +87,14 @@ public class RouteController {
     @PostMapping(value = "/cancelRoute")
     public ResponseEntity<String> cancelRoute(@RequestParam String routeId) {
         if (routeId == null || routeId.isEmpty()) {
-            return new ResponseEntity<>("Geçersiz routeId", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid routeId", HttpStatus.BAD_REQUEST);
         }
 
         boolean isDeleted = routeService.cancelRoute(routeId);
         if (isDeleted) {
-            return new ResponseEntity<>("Tur başarıyla iptal edildi", HttpStatus.OK);
+            return new ResponseEntity<>("Tour successfully canceled", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Tur iptali başarısız oldu", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Tour cancellation failed", HttpStatus.NOT_FOUND);
         }
     }
 

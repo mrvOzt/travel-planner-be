@@ -36,7 +36,7 @@ public class PaymentController {
         CreditCard existingCard = paymentService.getByCardNumber(creditCard.getCardNumber());
         if (existingCard != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Bu kredi kartı numarası zaten kayıtlıdır.");
+                    .body("This credit card number is already registered.");
         }
 
         Optional<User> optionalUser = userService.getUserById(creditCard.getUserId());

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @AllArgsConstructor
+@RequestMapping("api/plan")
 public class RoutePlanningController {
 
     @Autowired

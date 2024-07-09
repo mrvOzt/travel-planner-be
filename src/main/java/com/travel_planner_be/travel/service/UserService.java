@@ -4,6 +4,7 @@ import com.travel_planner_be.travel.dto.LoginDTO;
 import com.travel_planner_be.travel.entity.User;
 import com.travel_planner_be.travel.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User saveUser(User user) {
+    public ResponseEntity<?> saveUser(User user) {
         if (user.getId() == null) {
             user.setId(UUID.randomUUID().toString());
+            Optional<User> savedUser = userRepository.findByEmail(user.getEmail());
+            if(savedUser.isPresent()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Aldready registered");
+            }
         } else {
             Optional<User> existingUser = userRepository.findById(user.getId());
             if (existingUser.isPresent()) {
@@ -35,13 +40,13 @@ public class UserService {
                 updatedUser.setRoutes(user.getRoutes());
                 updatedUser.setPaymentMethods(user.getPaymentMethods());
                 updatedUser.setRole(user.getRole());
-                return userRepository.save(updatedUser);
+                return ResponseEntity.ok(userRepository.save(updatedUser));
             } else {
 
-                throw new RuntimeException("User not found with id: " + user.getId());
+                ResponseEntity.notFound();
             }
         }
-        return userRepository.save(user);
+        return ResponseEntity.ok(userRepository.save(user));
     }
 
 

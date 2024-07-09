@@ -13,13 +13,21 @@ public class User {
 
     @Id
     private String id;
+
     private String name;
+
     private String surname;
+
     private String email;
+
     private String password;
+
     private String phoneNumber;
+
     private List<String> routes;
+
     private List<String> paymentMethods;
+
     private String role;
 
 }

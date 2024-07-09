@@ -16,13 +16,21 @@ public class Route {
 
     @Id
     private String id;
+
     private String userId;
+
     private String userLocation;
+
     private String routeLocation;
+
     private double price;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
+
     private List<String> places;
+
     private int statusFlag;
 
 }

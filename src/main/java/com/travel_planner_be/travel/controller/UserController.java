@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@RequestMapping("api/user/")
+@RequestMapping("api/user")
 @RestController
 public class UserController {
 
@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
