@@ -45,8 +45,8 @@ public class EmailService {
                 variables.put("companyAddress", "Doğuş Caddesi No: 207/Z DEÜ Tınaztepe Yerleşkesi Buca 35390 İzmir Türkiye");
                 variables.put("customerName", existingUser.getName() + " " + existingUser.getSurname());
                 variables.put("customerEmail", existingUser.getEmail());
-                variables.put("userLocation", existingRoute.getUserLocation());
-                variables.put("routeLocation", existingRoute.getRouteLocation());
+                variables.put("userLocation", existingRoute.getDeparture());
+                variables.put("routeLocation", existingRoute.getDestination());
                 variables.put("duration", existingRoute.getStartDate() + " / " + existingRoute.getEndDate());
                 List<String> placeIds = existingRoute.getPlaces();
                 List<Place> routePlaces = new ArrayList<>();

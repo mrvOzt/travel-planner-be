@@ -19,9 +19,9 @@ public class Route {
 
     private String userId;
 
-    private String userLocation;
+    private String departure;
 
-    private String routeLocation;
+    private String destination;
 
     @Nullable
     private double price;

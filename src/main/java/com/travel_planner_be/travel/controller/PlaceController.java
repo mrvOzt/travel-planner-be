@@ -19,7 +19,7 @@ import java.util.Optional;
 public class PlaceController {
 
 
-    private PlaceService placeService;
+    private final PlaceService placeService;
 
     @PostMapping(value = "/savePlace")
     public Place savePlace(@RequestBody Place place) {
