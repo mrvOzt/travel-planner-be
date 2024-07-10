@@ -5,6 +5,7 @@ import com.travel_planner_be.travel.entity.CreditCard;
 import com.travel_planner_be.travel.service.PaymentService;
 import com.travel_planner_be.travel.service.UserService;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping(value ="/approvePayment")
-    public ResponseEntity<?> approvePayment(@RequestBody PaymentDTO paymentDTO) throws MessagingException {
+    public ResponseEntity<?> approvePayment(@Valid @RequestBody PaymentDTO paymentDTO) throws MessagingException {
         return paymentService.approvePayment(paymentDTO);
     }
 

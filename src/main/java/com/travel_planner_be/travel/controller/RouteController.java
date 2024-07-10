@@ -5,6 +5,7 @@ import com.travel_planner_be.travel.dto.UpdateRouteDTO;
 import com.travel_planner_be.travel.entity.Participant;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.service.RouteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,32 +22,32 @@ public class RouteController {
     private final RouteService routeService;
 
     @PostMapping(value = "/saveRoute")
-    public ResponseEntity<Route> saveRoute(@RequestBody Route route) {
+    public ResponseEntity<Route> saveRoute(@Valid @RequestBody Route route) {
         return routeService.saveRoute(route);
     }
 
     @GetMapping(value = "/getRoutes/{userId}")
-    public List<Route> getUserRoutes(@PathVariable String userId) {
+    public List<Route> getUserRoutes(@Valid @PathVariable String userId) {
         return routeService.getRouteByUserId(userId);
     }
 
     @GetMapping(value = "/getRoutePlaceList/{id}")
-        public List<String> getRoutePlaces(@PathVariable String id) {
+        public List<String> getRoutePlaces(@Valid @PathVariable String id) {
         return routeService.getRoutePlaces(id);
     }
 
     @PostMapping(value = "/cancelRoute")
-    public ResponseEntity<String> cancelRoute(@RequestParam String routeId) {
+    public ResponseEntity<String> cancelRoute(@Valid @RequestParam String routeId) {
         return routeService.cancelRoute(routeId);
     }
 
     @GetMapping(value = "/getParticipants")
-    public List<Participant> getParticipants(@RequestParam String routeId){
+    public List<Participant> getParticipants(@Valid @RequestParam String routeId){
         return routeService.getRouteParticipants(routeId);
     }
 
     @PostMapping(value = "/cancelPlace")
-    public ResponseEntity<?> cancelPlace(@RequestBody UpdateRouteDTO updateRouteDTO){
+    public ResponseEntity<?> cancelPlace(@Valid @RequestBody UpdateRouteDTO updateRouteDTO){
         return routeService.updateRoutePlace(updateRouteDTO);
     }
 

@@ -4,6 +4,7 @@ package com.travel_planner_be.travel.controller;
 import com.travel_planner_be.travel.dto.LoginDTO;
 import com.travel_planner_be.travel.entity.User;
 import com.travel_planner_be.travel.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +23,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDTO) {
         return userService.login(loginDTO);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 

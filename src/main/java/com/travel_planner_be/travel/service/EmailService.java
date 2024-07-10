@@ -3,8 +3,6 @@ package com.travel_planner_be.travel.service;
 import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.entity.User;
-import com.travel_planner_be.travel.service.RouteService;
-import com.travel_planner_be.travel.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
