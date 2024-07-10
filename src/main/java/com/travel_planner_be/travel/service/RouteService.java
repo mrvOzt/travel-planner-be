@@ -23,9 +23,14 @@ public class RouteService {
     private final UserService userService;
     private final PlaceService placeService;
 
+    public Optional<Route> getRouteById(String routeId) {
+        return routeRepository.findById(routeId);
+    }
+
     public List<Route> getRouteByUserId(String userId) {
         return routeRepository.findAllByUserId(userId);
     }
+
     public List<String> getRoutePlaces(String id) {
         return routeRepository.findById(id)
                 .map(Route::getPlaces)
@@ -50,7 +55,7 @@ public class RouteService {
         }
     }
 
-     public ResponseEntity<Route> saveRoute(Route route){
+     public ResponseEntity<String> saveRoute(Route route){
          route.setId(UUID.randomUUID().toString());
          Route savedRoute = routeRepository.save(route);
 
@@ -78,7 +83,7 @@ public class RouteService {
 
              userService.saveUser(user);
 
-             return new ResponseEntity<>(savedRoute, HttpStatus.OK);
+             return new ResponseEntity<>(savedRoute.getId(), HttpStatus.OK);
          } else {
 
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);

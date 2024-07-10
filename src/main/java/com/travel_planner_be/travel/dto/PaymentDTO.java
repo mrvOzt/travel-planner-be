@@ -8,5 +8,7 @@ import lombok.Setter;
 @Setter
 public class PaymentDTO {
 
+    private CreditCard creditCard;
 
+    private String routeId;
 }

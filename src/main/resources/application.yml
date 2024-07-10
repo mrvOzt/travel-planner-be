@@ -6,10 +6,41 @@ spring:
     mongodb:
       uri: mongodb+srv://TravelPlanner:ExvHrJA9MAnf55Ik@travelplanner.8vys92s.mongodb.net/
       database: TravelPlanner
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: customerservice.travelplanner@gmail.com
+    password: trpitgcmaozutfnt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
+
+  main:
+    allow-bean-definition-overriding: true
+
+
 logging:
   level:
     org.springframework.security: DEBUG
+
 server:
   port: 8081
+
+
+
+
+
+
+
+
 
 

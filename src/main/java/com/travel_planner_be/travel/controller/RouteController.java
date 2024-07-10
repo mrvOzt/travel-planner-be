@@ -20,7 +20,7 @@ public class RouteController {
     private final RouteService routeService;
 
     @PostMapping(value = "/saveRoute")
-    public ResponseEntity<Route> saveRoute(@RequestBody Route route) {
+    public ResponseEntity<String> saveRoute(@RequestBody Route route) {
         return routeService.saveRoute(route);
     }
 

@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.entity;
 
+import com.mongodb.lang.Nullable;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +16,7 @@ public class CreditCard {
     private String holderSurname;
     private String cvv;
     private String expirationDate;
+    @Nullable
     private double limit;
 
 }
