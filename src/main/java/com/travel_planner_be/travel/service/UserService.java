@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
+
     private UserRepository userRepository;
 
     public ResponseEntity<?> saveUser(User user) {

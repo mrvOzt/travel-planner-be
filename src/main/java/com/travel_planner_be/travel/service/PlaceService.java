@@ -3,6 +3,8 @@ package com.travel_planner_be.travel.service;
 
 import com.travel_planner_be.travel.dto.FilterDTO;
 import com.travel_planner_be.travel.entity.Place;
+import com.travel_planner_be.travel.entity.Route;
+import com.travel_planner_be.travel.entity.User;
 import com.travel_planner_be.travel.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PlaceService {
 
-    @Autowired
     private final PlaceRepository placeRepository;
 
     public Place savePlace(Place place) {
@@ -94,6 +95,7 @@ public class PlaceService {
         }
         return new ResponseEntity<>(totalPrice, HttpStatus.OK);
     }
+
 
 
 

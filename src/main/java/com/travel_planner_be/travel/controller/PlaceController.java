@@ -4,6 +4,7 @@ package com.travel_planner_be.travel.controller;
 import com.travel_planner_be.travel.dto.FilterDTO;
 import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.service.PlaceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/place")
+@RequiredArgsConstructor
 public class PlaceController {
 
-    @Autowired
+
     private PlaceService placeService;
 
     @PostMapping(value = "/savePlace")

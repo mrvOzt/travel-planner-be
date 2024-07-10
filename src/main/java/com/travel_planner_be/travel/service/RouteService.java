@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.service;
 
+import com.travel_planner_be.travel.dto.UpdateRouteDTO;
 import com.travel_planner_be.travel.entity.Participant;
 import com.travel_planner_be.travel.entity.Place;
 import com.travel_planner_be.travel.entity.Route;
@@ -10,10 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +42,17 @@ public class RouteService {
         if (routeId == null || routeId.isEmpty()) {
             return new ResponseEntity<>("Invalid routeId", HttpStatus.BAD_REQUEST);
         }
-        if (routeRepository.existsById(routeId)) {
+        Optional<Route> route = routeRepository.findById(routeId);
+        if (route.isPresent() && route.get().isStatusFlag()) {
+            Route existingRoute = route.get();
+            Optional<User> user = userService.getUserById(existingRoute.getUserId());
+            if (user.isPresent()) {
+                User existingUser = user.get();
+                List<String> routes = existingUser.getRoutes();
+                routes.remove(routeId);
+                existingUser.setRoutes(routes);
+                userService.saveUser(existingUser);
+            }
             routeRepository.deleteById(routeId);
             isDeleted = true;
         } else {
@@ -55,38 +65,73 @@ public class RouteService {
         }
     }
 
-     public ResponseEntity<String> saveRoute(Route route){
+     public ResponseEntity<Route> saveRoute(Route route){
          route.setId(UUID.randomUUID().toString());
-         Route savedRoute = routeRepository.save(route);
+         route.setStatusFlag(true);
+         long tourDayCount = getTourDayNumber(route.getStartDate(),route.getEndDate());
+         if(tourDayCount == -1){
+             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+         }
+         else{
+             for (String placeId : route.getPlaces()) {
+                 Optional<Place> selectedPlace = placeService.getPlace(placeId);
+                 if(selectedPlace.isPresent()){
+                     Place place = selectedPlace.get();
+                     place.setPopularityRate(place.getPopularityRate() + 1);
+                     getTotalPrice(tourDayCount,place,route);
+                     placeService.updatePlace(place);
+                 }
+                 else{
+                     return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                 }
 
-         Optional<User> optionalUser = userService.getUserById(route.getUserId());
-
-         for (String placeId : savedRoute.getPlaces()) {
-             Optional<Place> selectedPlace = placeService.getPlace(placeId);
-             if(selectedPlace.isPresent()){
-                 Place place = selectedPlace.get();
-                 place.setPopularityRate(place.getPopularityRate() + 1);
-                 placeService.updatePlace(place);
              }
-             else{
-                 return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-             }
+             Optional<User> optionalUser = userService.getUserById(route.getUserId());
+             Route savedRoute = routeRepository.save(route);
 
+             if (optionalUser.isPresent()) {
+                 User user = optionalUser.get();
+                 if (user.getRoutes() == null) {
+                     user.setRoutes(new ArrayList<>());
+                 }
+                 user.getRoutes().add(savedRoute.getId());
+
+                 userService.saveUser(user);
+
+                 return new ResponseEntity<>(savedRoute, HttpStatus.OK);
+             } else {
+
+                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+             }
          }
 
-         if (optionalUser.isPresent()) {
-             User user = optionalUser.get();
-             if (user.getRoutes() == null) {
-                 user.setRoutes(new ArrayList<>());
+     }
+
+     public ResponseEntity<?> updateRoutePlace(UpdateRouteDTO updateRouteDTO){
+         boolean isSuccess;
+         if (updateRouteDTO.getRouteId() == null || updateRouteDTO.getRouteId().isEmpty()) {
+             return new ResponseEntity<>("Invalid routeId",HttpStatus.BAD_REQUEST);
+         }
+         Optional<Route> route = routeRepository.findById(updateRouteDTO.getRouteId());
+         if (route.isPresent() && route.get().isStatusFlag()) {
+             Route existingRoute = route.get();
+             List<String> places = existingRoute.getPlaces();
+             if(updateRouteDTO.getIsDeleteOperation() == 1){
+                 places.remove(updateRouteDTO.getPlaceId());
              }
-             user.getRoutes().add(savedRoute.getId());
-
-             userService.saveUser(user);
-
-             return new ResponseEntity<>(savedRoute.getId(), HttpStatus.OK);
+             else{
+                 places.add(updateRouteDTO.getPlaceId());
+             }
+             existingRoute.setPlaces(places);
+             routeRepository.save(existingRoute);
+             isSuccess = true;
          } else {
-
-             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+             isSuccess = false;
+         }
+         if (isSuccess) {
+             return new ResponseEntity<>("Route succesfully updated", HttpStatus.OK);
+         } else {
+             return new ResponseEntity<>("Route update is failed", HttpStatus.NOT_FOUND);
          }
      }
 
@@ -97,6 +142,23 @@ public class RouteService {
             return selectedRoute.getParticipants();
         }
         return new ArrayList<>();
+     }
+
+     private long getTourDayNumber(LocalDate startDate, LocalDate endDate){
+        if(endDate.isAfter(startDate)){
+            return ChronoUnit.DAYS.between(startDate, endDate);
+        }
+        else{
+            return -1;
+        }
+     }
+     private void getTotalPrice(long tourDayCount,Place place,Route route){
+        if(Objects.equals(place.getType(), "Hotel")){
+            route.setPrice(route.getPrice() + (place.getPrice() * route.getParticipants().size() * tourDayCount));
+        }
+        else{
+            route.setPrice(route.getPrice() + (place.getPrice() * route.getParticipants().size()));
+        }
      }
 
 

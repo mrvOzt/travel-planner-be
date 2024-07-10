@@ -1,6 +1,7 @@
 package com.travel_planner_be.travel.controller;
 
 
+import com.travel_planner_be.travel.dto.UpdateRouteDTO;
 import com.travel_planner_be.travel.entity.Participant;
 import com.travel_planner_be.travel.entity.Route;
 import com.travel_planner_be.travel.service.RouteService;
@@ -20,7 +21,7 @@ public class RouteController {
     private final RouteService routeService;
 
     @PostMapping(value = "/saveRoute")
-    public ResponseEntity<String> saveRoute(@RequestBody Route route) {
+    public ResponseEntity<Route> saveRoute(@RequestBody Route route) {
         return routeService.saveRoute(route);
     }
 
@@ -43,4 +44,10 @@ public class RouteController {
     public List<Participant> getParticipants(@RequestParam String routeId){
         return routeService.getRouteParticipants(routeId);
     }
+
+    @PostMapping(value = "/cancelPlace")
+    public ResponseEntity<?> cancelPlace(@RequestBody UpdateRouteDTO updateRouteDTO){
+        return routeService.updateRoutePlace(updateRouteDTO);
+    }
+
 }

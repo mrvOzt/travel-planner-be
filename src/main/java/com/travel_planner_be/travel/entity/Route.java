@@ -23,6 +23,7 @@ public class Route {
 
     private String routeLocation;
 
+    @Nullable
     private double price;
 
     private LocalDate startDate;
@@ -33,6 +34,7 @@ public class Route {
 
     private List<Participant> participants;
 
-    private int statusFlag;
+    @Nullable
+    private boolean statusFlag;
 
 }

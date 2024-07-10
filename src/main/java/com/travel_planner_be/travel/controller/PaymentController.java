@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final UserService userService;
 
     @PostMapping(value ="/approvePayment")
     public ResponseEntity<?> approvePayment(@RequestBody PaymentDTO paymentDTO) throws MessagingException {
