@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @Setter
-public class UpdateRouteDTO {
+public class    UpdateRouteDTO {
 
     @NotBlank(message = "Please enter routeId")
     private String routeId;
@@ -15,6 +15,5 @@ public class UpdateRouteDTO {
     @NotBlank(message = "Please enter placeId")
     private String placeId;
 
-    @NotBlank(message = "Please enter operation type")
     private int isDeleteOperation;
 }

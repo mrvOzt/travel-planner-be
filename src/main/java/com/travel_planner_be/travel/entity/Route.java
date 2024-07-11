@@ -27,19 +27,14 @@ public class Route {
     @NotBlank(message = "Please enter a valid destination")
     private String destination;
 
-    @Positive(message = "Price must be positive")
     private double price;
 
-    @NotNull
     private LocalDate startDate;
 
-    @NotNull
     private LocalDate endDate;
 
-    @NotNull
     private List<String> places;
 
-    @NotNull
     private List<Participant> participants;
 
     @Nullable

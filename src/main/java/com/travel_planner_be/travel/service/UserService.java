@@ -18,7 +18,7 @@ import java.util.UUID;
 public class UserService {
 
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public ResponseEntity<?> saveUser(User user) {
         if (user.getId() == null) {

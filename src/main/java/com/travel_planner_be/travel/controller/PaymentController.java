@@ -21,7 +21,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping(value ="/approvePayment")
-    public ResponseEntity<?> approvePayment(@Valid @RequestBody PaymentDTO paymentDTO) throws MessagingException {
+    public ResponseEntity<?> approvePayment(@RequestBody PaymentDTO paymentDTO) throws MessagingException {
         return paymentService.approvePayment(paymentDTO);
     }
 }

@@ -22,6 +22,7 @@ import java.util.*;
 public class PlaceService {
 
 
+    @Autowired
     private final PlaceRepository placeRepository;
 
     public Place savePlace(Place place) {

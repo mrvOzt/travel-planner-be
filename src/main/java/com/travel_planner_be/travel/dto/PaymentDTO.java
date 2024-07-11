@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 public class PaymentDTO {
 
-    @NotBlank(message = "Please enter all credit card information")
     private CreditCard creditCard;
 
-    @NotBlank(message = "Please enter routeId")
     private String routeId;
 }
