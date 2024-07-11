@@ -51,4 +51,10 @@ public class RouteController {
         return routeService.updateRoutePlace(updateRouteDTO);
     }
 
+    @GetMapping(value = "/getRoutePlaceCoordinates/{id}")
+    public List<String> getRoutePlacesCoordinates(@Valid @PathVariable String id) {
+        return routeService.getRoutePlaces(id);
+    }
+
+
 }

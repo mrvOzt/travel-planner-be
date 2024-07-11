@@ -24,7 +24,4 @@ public class PaymentController {
     public ResponseEntity<?> approvePayment(@Valid @RequestBody PaymentDTO paymentDTO) throws MessagingException {
         return paymentService.approvePayment(paymentDTO);
     }
-
-
-
 }

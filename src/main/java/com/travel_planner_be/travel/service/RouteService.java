@@ -1,5 +1,6 @@
 package com.travel_planner_be.travel.service;
 
+import com.travel_planner_be.travel.dto.CoordinatesDTO;
 import com.travel_planner_be.travel.dto.UpdateRouteDTO;
 import com.travel_planner_be.travel.entity.Participant;
 import com.travel_planner_be.travel.entity.Place;
@@ -144,6 +145,25 @@ public class RouteService {
         return new ArrayList<>();
      }
 
+     public ResponseEntity<?> getPlacesCoordinates(String routeId){
+        List<CoordinatesDTO> coordinatesDTOList = new ArrayList<>(List.of());
+        Optional<Route> route = routeRepository.findById(routeId);
+        if(route.isPresent()){
+            List<String> places = route.get().getPlaces();
+            for(String placeId : places){
+                Optional<Place> place = placeService.getPlace(placeId);
+                if(place.isPresent()) {
+                    CoordinatesDTO coordinatesDTO = new CoordinatesDTO();
+                    coordinatesDTO.setLatitude(place.get().getLatitude());
+                    coordinatesDTO.setLongitude(place.get().getLongitude());
+                    coordinatesDTOList.add(coordinatesDTO);
+                }
+            }
+            return ResponseEntity.ok(coordinatesDTOList);
+        }
+         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+     }
+
      private long getTourDayNumber(LocalDate startDate, LocalDate endDate){
         if(endDate.isAfter(startDate)){
             return ChronoUnit.DAYS.between(startDate, endDate);
@@ -160,6 +180,8 @@ public class RouteService {
             route.setPrice(route.getPrice() + (place.getPrice() * route.getParticipants().size()));
         }
      }
+
+
 
 
 }
