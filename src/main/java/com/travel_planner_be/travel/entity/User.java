@@ -38,7 +38,6 @@ public class User {
     @Size(max = 10 , message = "Enter the phone number in 10 digits")
     private String phoneNumber;
 
-    @NotBlank(message = "Routes field cannot be empty")
     private List<String> routes;
 
     @Nullable
